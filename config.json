@@ -8,7 +8,7 @@
 "发件人邮箱账号":"sample@qq.com",
 "发件人邮箱授权码":"auth****code****",
 "收件人邮箱账号":"sample@qq.com",
-"//":"///以下是Selenium相关信息，但是用不到，因为代码里面没有写/////",
-"浏览器":"firerox",
-"驱动路径":"path"
+"//":"///以下是Selenium相关信息。浏览器暂时不支持改/////",
+"浏览器":"chrome",
+"驱动路径":"D:\\toolPath\\chromedriver"
 }

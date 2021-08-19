@@ -1,4 +1,4 @@
-#coding=utf-8
+# coding=utf-8
 
 import random
 import time
@@ -59,19 +59,19 @@ def emailModule(subject, text):
 
 
 try:
+    # 从config.json读取驱动路径
+    configFile = open("config.json", "r", encoding="utf-8")
+    configInfo = json.loads(configFile.read())
+    PATH = configInfo['驱动路径']
     # 打开浏览器
-    br = webdriver.Firefox(executable_path="D:\\toolPath\geckodriver")
-    # 打开HFUT学工工作平台,并登录
-    # 登录HFUT统一认证平台
+    br = webdriver.Chrome(executable_path=PATH)
+    # 打开HFUT学工工作平台,并登录HFUT CAS统一认证平台
     br.get("https://cas.hfut.edu.cn/cas/login")
 
     # 从config.json读取用户名(学号)，密码并登录
-
-    configFile = open("config.json", "r", encoding="utf-8")
-    loginInfo = json.loads(configFile.read())
-    # print(loginInfo.items())#for debug
-    username = loginInfo['学号']
-    password = loginInfo['密码']
+    # print(configInfo.items())#for debug
+    username = configInfo['学号']
+    password = configInfo['密码']
     configFile.close()
     # 填入学号密码
     br.find_element_by_id("username").send_keys(username)
@@ -80,7 +80,7 @@ try:
     # 点击登录
     br.find_element_by_id("sb2").click()
 
-    if isElementExists_byXpath(br,'/html/body/div[2]/div/div[2]/form/div[2]/div/span/div/span'):
+    if isElementExists_byXpath(br, '/html/body/div[2]/div/div[2]/form/div[2]/div/span/div/span'):
         br.close()
         print("学号/密码错误！")
         raise Exception
