@@ -8,6 +8,7 @@ from email.header import Header
 from email.mime.text import MIMEText
 from selenium import webdriver
 from time import sleep
+import os
 
 
 # ####DEF PART#####
@@ -79,6 +80,10 @@ try:
     # 点击登录
     br.find_element_by_id("sb2").click()
 
+    if isElementExists_byXpath(br,'/html/body/div[2]/div/div[2]/form/div[2]/div/span/div/span'):
+        br.close()
+        print("学号/密码错误！")
+        raise Exception
     # 进入学生疫情信息收集页面
 
     br.get("http://stu.hfut.edu.cn/xsfw/sys/xsyqxxsjapp/*default/index.do#/mrbpa")
@@ -91,16 +96,21 @@ try:
 
         if isElementExists_byXpath(br, '/html/body/main/article/section/div/div[3]/div[2]/div/div[4]/div['
                                        '2]/div/table/tbody/tr[1]/td[2]/a[1]'):
+            print("自动打卡失败！原因：可能已打过卡""，若不放心请登录今日校园检查")
             emailModule("自动打卡失败！原因：可能已打过卡", "可能今日已打过卡，若不放心请登录今日校园检查")
         else:
+            print("自动打卡失败！原因：可能程序出现故障"".今日请手动打卡，闲时可向作者反馈问题")
             emailModule("自动打卡失败！原因：可能程序出现故障", "可能程序出现故障，今日请手动打卡，闲时可向作者反馈问题")
 
     else:
         # 点击保存按钮，提交打卡信息
         br.find_element_by_xpath('//*[@id="save"]').click()
-
+        print("自动打卡成功！")
         emailModule("自动打卡成功！", "于" + time.strftime("%Y-%m-%d-%H时%M分%S秒", time.localtime()) + "进行了自动打卡")
 
     br.close()
 except:
+    br.close()
+    print("自动打卡失败！"", 程序运行出现错误")
+    os.system('pause')
     emailModule("自动打卡失败！", "程序运行出现错误")
