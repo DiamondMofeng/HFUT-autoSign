@@ -88,10 +88,9 @@ try:
 
     # 进入学生疫情信息收集页面
 
-    br.get("http://stu.hfut.edu.cn/xsfw/sys/xsyqxxsjapp/*default/index.do#/mrbpa")
+    br.get("http://stu.hfut.edu.cn/xsfw/sys/emapfunauth/casValidate.do?service=/xsfw/sys/swmxsyqxxsjapp/*default/index.do")
     sleep(random.randint(5, 10))
-    br.find_element_by_xpath("/html/body/div[1]/div/div/div/div/button[1]").click()
-    sleep(random.randint(5, 10))
+
 
     # 从config.json读取用户名(学号)，密码并登录
 
@@ -114,10 +113,9 @@ try:
 
     # 判断今日是否未填报
 
-    if not isElementExists_byXpath(br, '//*[@id="save"]'):
+    if not isElementExists_byXpath(br, '/html/body/div[1]/div[1]/div/div[6]/div/button'): # 提交按钮
 
-        if isElementExists_byXpath(br, '/html/body/main/article/section/div/div[3]/div[2]/div/div[4]/div['
-                                       '2]/div/table/tbody/tr[1]/td[2]/a[1]'):
+        if isElementExists_byXpath(br, '/html/body/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]'):
             print("自动打卡失败！原因：可能已打过卡""，若不放心请登录今日校园检查")
             emailModule("自动打卡失败！原因：可能已打过卡", "可能今日已打过卡，若不放心请登录今日校园检查")
         else:
@@ -125,10 +123,10 @@ try:
             emailModule("自动打卡失败！原因：可能程序出现故障", "可能程序出现故障，今日请手动打卡，闲时可向作者反馈问题")
 
     else:
-        # 点击保存按钮，提交打卡信息
-        br.find_element_by_xpath('//*[@id="save"]').click()
-        print("自动打卡成功！")
-        emailModule("自动打卡成功！", username + "于" + time.strftime("%Y-%m-%d-%H时%M分%S秒", time.localtime()) + "进行了自动打卡")
+            # 点击保存按钮，提交打卡信息
+            br.find_element_by_xpath('/html/body/div[1]/div[1]/div/div[6]/div/button').click()
+            print("自动打卡成功！")
+            emailModule("自动打卡成功！", username + "于" + time.strftime("%Y-%m-%d-%H时%M分%S秒", time.localtime()) + "进行了自动打卡")
 
     br.close()
 except:
